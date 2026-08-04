@@ -64,3 +64,13 @@ See:
 ```
 docs/coding-conventions.md
 ```
+
+## ✅ Completed
+
+- User Registration
+- User Login
+- JWT Authentication
+- Protected Routes
+- Supabase Integration
+- Report Upload (PDF/Image)
+- Report Retrieval
