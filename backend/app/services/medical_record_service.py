@@ -27,3 +27,13 @@ def save_medical_record(record: dict):
     )
 
     return response.data[0]
+def get_all_medical_records():
+    response = (
+        supabase
+        .table("medical_records")
+        .select("*")
+        .order("created_at", desc=True)
+        .execute()
+    )
+
+    return response.data

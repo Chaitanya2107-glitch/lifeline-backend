@@ -12,6 +12,11 @@ from app.services.medical_record_service import (
     save_medical_record,
     get_record_by_hash,
 )
+from app.services.medical_record_service import (
+    save_medical_record,
+    get_record_by_hash,
+    get_all_medical_records,
+)
 
 router = APIRouter()
 
@@ -64,3 +69,7 @@ async def upload_report(file: UploadFile = File(...)):
     finally:
         if file_path.exists():
             file_path.unlink()
+
+@router.get("/medical-records")
+async def get_medical_records():
+    return get_all_medical_records()
