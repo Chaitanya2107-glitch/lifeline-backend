@@ -7,6 +7,11 @@ from app.ai.ai_manager import extract_medical_data
 from app.ai.parser import parse_ai_response
 from app.ai.validator import validate_medical_record
 from app.services.medical_record_service import save_medical_record
+from app.utils.hash import generate_report_hash
+from app.services.medical_record_service import (
+    save_medical_record,
+    get_record_by_hash,
+)
 
 router = APIRouter()
 
@@ -26,6 +31,18 @@ async def upload_report(file: UploadFile = File(...)):
         # OCR
         text = extract_text(str(file_path))
 
+        report_hash = generate_report_hash(text)
+
+        existing_record = get_record_by_hash(report_hash)
+
+        if existing_record:
+            return {
+                "message": "Duplicate report detected.",
+                "record": existing_record,
+            }
+
+        
+
         # AI
         ai_response = extract_medical_data(text)
 
@@ -36,7 +53,11 @@ async def upload_report(file: UploadFile = File(...)):
         record = validate_medical_record(parsed)
 
         # Save to Supabase
-        saved_record = save_medical_record(record.model_dump())
+        
+        data = record.model_dump()
+        data["report_hash"] = report_hash
+
+        saved_record = save_medical_record(data)
 
         return saved_record
 

@@ -1,5 +1,5 @@
 import hashlib
 
 
-def report_hash(text: str) -> str:
-    return hashlib.sha256(text.encode()).hexdigest()
+def generate_report_hash(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
