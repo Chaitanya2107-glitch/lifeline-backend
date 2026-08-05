@@ -13,6 +13,13 @@ class Settings(BaseSettings):
 
     LOG_LEVEL: str = "INFO"
 
+    GEMINI_API_KEY: str
+    OPENROUTER_API_KEY: str
+
+    GROQ_API_KEY: str
+    AI_PROVIDER: str = "groq"
+    GROQ_MODEL: str = "llama-3.1-8b-instant"
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8"

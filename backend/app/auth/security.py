@@ -5,6 +5,7 @@ from fastapi import Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from app.config.settings import settings
 
+
 # Change these later by moving them into settings.py
 SECRET_KEY = settings.JWT_SECRET_KEY
 ALGORITHM = settings.JWT_ALGORITHM
@@ -65,4 +66,6 @@ def get_current_user(
             detail="Invalid or expired token"
         )
 
-    return payload    
+    return payload
+
+

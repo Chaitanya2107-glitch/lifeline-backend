@@ -3,11 +3,13 @@ from app.config.settings import settings
 from app.utils.logger import logger
 from app.database.supabase import supabase
 from app.upload.routes import router as upload_router
+from app.api.upload import router as upload_router
 
 # NEW IMPORT
 from app.auth.routes import router as auth_router
 
 app = FastAPI(title="Lifeline Backend")
+app.include_router(upload_router)
 
 # REGISTER ROUTER
 app.include_router(auth_router)
