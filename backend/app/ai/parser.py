@@ -1,4 +1,7 @@
 import json
+import re
+
+from app.utils.logger import logger
 
 
 class AIResponseError(Exception):
@@ -6,6 +9,7 @@ class AIResponseError(Exception):
 
 
 def parse_ai_response(response: str) -> dict:
+
     response = response.strip()
 
     if response.startswith("```json"):
@@ -22,5 +26,25 @@ def parse_ai_response(response: str) -> dict:
     try:
         return json.loads(response)
 
-    except json.JSONDecodeError as e:
-        raise AIResponseError(f"Invalid AI JSON: {e}")
+    except json.JSONDecodeError:
+
+        response = re.sub(
+            r'\\(?!["\\/bfnrtu])',
+            r'\\\\',
+            response
+        )
+
+        try:
+            return json.loads(response)
+
+        except json.JSONDecodeError as e:
+
+            logger.error(
+                "AI JSON parsing failed | Error: {} | Response preview: {}",
+                str(e),
+                response[:500]
+            )
+
+            raise AIResponseError(
+                f"Invalid AI JSON: {e}"
+            )

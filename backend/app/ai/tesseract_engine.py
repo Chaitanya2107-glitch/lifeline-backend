@@ -21,8 +21,23 @@ def extract_text(file_path: str) -> tuple[str, float]:
 
     image = Image.open(path)
 
+    data = pytesseract.image_to_data(
+        image,
+        output_type=pytesseract.Output.DICT
+    )
+
     text = pytesseract.image_to_string(image)
 
-    confidence = 1.0 if text.strip() else 0.0
 
+    confidences = [
+        int(c)
+        for c in data["conf"]
+        if c != "-1"
+    ]
+
+
+    if confidences:
+        confidence = sum(confidences) / len(confidences) / 100
+    else:
+        confidence = 0.0
     return text, confidence
