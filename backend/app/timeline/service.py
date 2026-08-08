@@ -1,9 +1,13 @@
 from app.services.medical_record_service import get_all_medical_records
 
 
-def generate_timeline():
+def generate_timeline(user_id: str):
 
-    records = get_all_medical_records()
+    records = get_all_medical_records(user_id)
+
+    # Keep your existing timeline logic below this line
+
+    # keep the rest of your existing timeline logic here
 
     timeline = []
 
